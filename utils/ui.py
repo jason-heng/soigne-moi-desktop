@@ -11,6 +11,9 @@ class Colors:
     TERTIARY = "#F9F7F3"
     TERTIARY_LIGHT = "#F9F7F3"
 
+    WHITE = "#FFFFFF"
+    LIGHT_GRAY = "#E5E7EB"
+
 def font_title(size: int) -> CTkFont:
     return CTkFont(family="Helvetica", size=size, weight="bold")
 
