@@ -20,6 +20,7 @@ class ConnexionBox(CTkFrame):
             corner_radius=5,
             font=font_text(14),
             placeholder_text_color=Colors.SECONDARY_LIGHT,
+            text_color=Colors.SECONDARY,
             border_width=0,
             width=280,
             height=34
@@ -31,6 +32,7 @@ class ConnexionBox(CTkFrame):
             self,
             placeholder_text="Mot de passe",
             fg_color=Colors.TERTIARY,
+            text_color=Colors.SECONDARY,
             corner_radius=5,
             font=font_text(14),
             placeholder_text_color=Colors.SECONDARY_LIGHT,
@@ -62,7 +64,8 @@ class ConnexionBox(CTkFrame):
             font=font_title(14),
             width=280,
             height=42,
-            corner_radius=5
+            corner_radius=5,
+            command=lambda : 1+1
         )
 
         conn_text.place(relx=0.5, rely=0.05, anchor=CENTER)
@@ -83,11 +86,19 @@ class LoginPage(CTkFrame):
         self.window = window
 
         self.view()
+        self.focus_event(self.window)
 
     def view(self):
         logo_text = CTkLabel(
             self, text="SoigneMoi", font=font_title(32), text_color=Colors.PRIMARY
         )
         logo_text.place(relx=0.5, y=80, anchor=CENTER)
-        connexion_box = ConnexionBox(self.window)
-        connexion_box.place(relx=0.5, rely=0.5, anchor=CENTER)
+        self.connexion_box = ConnexionBox(self.window)
+        self.connexion_box.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+    def focus_event(self, widget):
+        for sub_widget in widget.winfo_children():
+            sub_widget.bind("<ButtonPress>", lambda _:widget.focus())
+            if widget.winfo_children():
+                self.focus_event(sub_widget)
+        
