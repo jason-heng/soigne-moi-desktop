@@ -1,5 +1,5 @@
 from utils.ui import font_title, font_text
-from utils.ui import Colors
+from utils.ui import Colors, focus_event
 
 from customtkinter import *
 from PIL import Image
@@ -86,13 +86,14 @@ class LoginPage(CTkFrame):
         self.window = window
 
         self.view()
-        self.focus_event(self.window)
+        focus_event(self.window)
 
     def view(self):
         logo_text = CTkLabel(
             self, text="SoigneMoi", font=font_title(32), text_color=Colors.PRIMARY
         )
         self.connexion_box = ConnexionBox(self.window)
+
         deco_up_image = CTkImage(light_image=Image.open("assets/images/Deco up.png"), size=(600, 400))
         deco_up = CTkLabel(self, text="", image=deco_up_image)
         deco_down_image = CTkImage(light_image=Image.open("assets/images/Deco down.png"), size=(600, 400))
@@ -103,8 +104,3 @@ class LoginPage(CTkFrame):
         deco_up.place(relx=-0.05, rely=-0.05)
         deco_down.place(relx=0.55, rely=0.48)
 
-    def focus_event(self, widget):
-        for sub_widget in widget.winfo_children():
-            sub_widget.bind("<ButtonPress>", lambda _:widget.focus())
-            if widget.winfo_children():
-                self.focus_event(sub_widget)

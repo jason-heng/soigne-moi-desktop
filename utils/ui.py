@@ -19,3 +19,9 @@ def font_title(size: int) -> CTkFont:
 
 def font_text(size: int) -> CTkFont:
     return CTkFont(family="Roboto", size=size, weight="bold")
+
+def focus_event(widget):
+        for sub_widget in widget.winfo_children():
+            sub_widget.bind("<ButtonPress>", lambda _:widget.focus())
+            if widget.winfo_children():
+                focus_event(sub_widget)
