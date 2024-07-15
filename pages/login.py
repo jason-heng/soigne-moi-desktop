@@ -92,13 +92,19 @@ class LoginPage(CTkFrame):
         logo_text = CTkLabel(
             self, text="SoigneMoi", font=font_title(32), text_color=Colors.PRIMARY
         )
-        logo_text.place(relx=0.5, y=80, anchor=CENTER)
         self.connexion_box = ConnexionBox(self.window)
+        deco_up_image = CTkImage(light_image=Image.open("assets/images/Deco up.png"), size=(600, 400))
+        deco_up = CTkLabel(self, text="", image=deco_up_image)
+        deco_down_image = CTkImage(light_image=Image.open("assets/images/Deco down.png"), size=(600, 400))
+        deco_down = CTkLabel(self, text="", image=deco_down_image)
+
+        logo_text.place(relx=0.5, y=80, anchor=CENTER)
         self.connexion_box.place(relx=0.5, rely=0.5, anchor=CENTER)
+        deco_up.place(relx=-0.05, rely=-0.05)
+        deco_down.place(relx=0.55, rely=0.48)
 
     def focus_event(self, widget):
         for sub_widget in widget.winfo_children():
             sub_widget.bind("<ButtonPress>", lambda _:widget.focus())
             if widget.winfo_children():
                 self.focus_event(sub_widget)
-        
