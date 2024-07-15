@@ -12,7 +12,7 @@ class App(CTk):
         self.title("SoigneMoi")
 
         self.geometry("1280x720")
-        self.resizable(False, False)
+        self.minsize(width=1120, height=620)
 
         LoginPage(self)
         
