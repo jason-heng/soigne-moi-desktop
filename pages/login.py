@@ -94,13 +94,20 @@ class LoginPage(CTkFrame):
         )
         self.connexion_box = ConnexionBox(self.window)
 
-        deco_up_image = CTkImage(light_image=Image.open("assets/images/Deco up.png"), size=(600, 400))
-        deco_up = CTkLabel(self, text="", image=deco_up_image)
-        deco_down_image = CTkImage(light_image=Image.open("assets/images/Deco down.png"), size=(600, 400))
-        deco_down = CTkLabel(self, text="", image=deco_down_image)
+        deco_up = CTkLabel(
+            self, 
+            text="", 
+            image=CTkImage(light_image=Image.open("assets/images/Deco up.png"), size=(600, 400))
+        )
+        deco_down = CTkLabel(
+            self, 
+            text="", 
+            image=CTkImage(light_image=Image.open("assets/images/Deco down.png"), size=(600, 400))
+        )
 
         logo_text.place(relx=0.5, y=80, anchor=CENTER)
         self.connexion_box.place(relx=0.5, rely=0.5, anchor=CENTER)
+        self.window.bind("<Configure>", func=lambda event: print(event))
         deco_up.place(relx=-0.05, rely=-0.05)
         deco_down.place(relx=0.55, rely=0.48)
 
