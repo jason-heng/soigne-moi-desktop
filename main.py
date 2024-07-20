@@ -1,6 +1,6 @@
 from pages.login import LoginPage
 from pages.home import HomePage
-from utils.ui import Colors
+from utils.ui import Colors, center
 
 import customtkinter as ctk
 from customtkinter import CTk
@@ -11,8 +11,9 @@ class App(CTk):
         super().__init__(fg_color=Colors.TERTIARY)
         self.title("SoigneMoi")
 
-        self.geometry("1280x720")
-        self.minsize(width=1120, height=620)
+        self.minsize(width=800, height=675)
+        self.maxsize(width=1280, height=720)
+        center(1120, 620, self)
 
         LoginPage(self)
         

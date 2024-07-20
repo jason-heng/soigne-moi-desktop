@@ -97,13 +97,14 @@ class LoginPage(CTkFrame):
         deco_up = CTkLabel(
             self, 
             text="", 
-            image=CTkImage(light_image=Image.open("assets/images/Deco up.png"), size=(600, 400))
+            image=CTkImage(light_image=Image.open("assets/images/Deco up.png"), size=(600, 400)),
         )
         deco_down = CTkLabel(
-            self, 
-            text="", 
+            self,
+            text="",
             image=CTkImage(light_image=Image.open("assets/images/Deco down.png"), size=(600, 400))
         )
+        logo_text.lift(deco_up)
 
         logo_text.place(relx=0.5, y=80, anchor=CENTER)
         self.connexion_box.place(relx=0.5, rely=0.5, anchor=CENTER)

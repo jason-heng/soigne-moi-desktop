@@ -25,3 +25,16 @@ def focus_event(widget):
             sub_widget.bind("<ButtonPress>", lambda _:widget.focus())
             if widget.winfo_children():
                 focus_event(sub_widget)
+
+def clear(frame) -> None:
+    for widget in frame.winfo_children():
+        widget.destroy()
+
+
+def center(w, h, frame) -> None:
+    ws = frame.winfo_screenwidth()
+    hs = frame.winfo_screenheight()
+    x = (ws / 2) - (w / 2)
+    y = (hs / 2) - (h / 2)
+    frame.geometry(f"{w}x{h}+{x}+{y}")
+    clear(frame)
