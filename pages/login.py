@@ -108,7 +108,6 @@ class LoginPage(CTkFrame):
 
         logo_text.place(relx=0.5, y=80, anchor=CENTER)
         self.connexion_box.place(relx=0.5, rely=0.5, anchor=CENTER)
-        self.window.bind("<Configure>", func=lambda event: print(event))
         deco_up.place(relx=-0.05, rely=-0.05)
         deco_down.place(relx=0.55, rely=0.48)
 
