@@ -1,8 +1,8 @@
 from datetime import datetime
 
 class Patient:
-    def __init__(self, User_id):
-        self.id = User_id
+    def __init__(self, user_id):
+        self.id = user_id
         self.first_name = "hamid"
         self.last_name = "lepatient"
         self.email = "hamidLepatient@gmail.com"
@@ -25,12 +25,3 @@ class Stay:
         self.end = "25/11/2022"
         self.reason = "pharingite"
 
-class User:
-    def __init__(self, user_id : int):
-        self.id = user_id
-        self.first_name = "hamid"
-        self.last_name = "lesecrétaire"
-        self.email = "hamidlesecrétaire@gmail.com"
-        self.adress = "21 rue delopitale"
-        self.password = "123 viva l'algerie"
-        self.is_admin = False
