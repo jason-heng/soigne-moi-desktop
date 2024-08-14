@@ -14,6 +14,8 @@ class Colors:
     WHITE = "#FFFFFF"
     LIGHT_GRAY = "#E5E7EB"
 
+    RED = "#b51d18"
+
 def font_title(size: int) -> CTkFont:
     return CTkFont(family="Helvetica", size=size, weight="bold")
 
