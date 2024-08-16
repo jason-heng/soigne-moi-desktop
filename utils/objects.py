@@ -1,27 +1,25 @@
-from datetime import datetime
 
 class Patient:
-    def __init__(self, user_id):
-        self.id = user_id
-        self.first_name = "hamid"
-        self.last_name = "lepatient"
-        self.email = "hamidLepatient@gmail.com"
-        self.adress = "21 rue duchantier"
-        self.is_admin = False
-        self.stays = [
-            Stay(63, patient=self),
-            Stay(62, patient=self),
-            Stay(6, patient=self),
-            Stay(636, patient=self),
-            Stay(630, patient=self),
-        ]
+    def __init__(self, patient_info : dict):
+        self.id = patient_info["id"]
+        self.first_name = patient_info["firstName"]
+        self.last_name = patient_info["lastName"]
+        self.opinions = patient_info["opinions"]
+        
+
+
+class Doctor:
+    def __init__(self, doctor_info):
+        self.first_name = doctor_info["firstName"]
+        self.last_name = doctor_info["lastName"]
+
+
 
 class Stay:
-    def __init__(self, stay_id : int, patient: Patient | None = None):
-        self.id = stay_id
-        self.patient = patient if patient else Patient(96)
-        self.patient_id = patient.id
-        self.start = "20/11/2022"
-        self.end = "25/11/2022"
-        self.reason = "pharingite"
-
+    def __init__(self, stay_info : dict):
+        self.id : int = stay_info["id"]
+        self.patient = Patient(stay_info["patient"])
+        self.doctor = Doctor(stay_info["doctor"])
+        self.reason : str = stay_info["reason"]
+        self.start = stay_info["reason"]
+        self.end = stay_info["end"]
