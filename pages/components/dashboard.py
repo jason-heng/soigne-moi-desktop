@@ -1,6 +1,6 @@
 from customtkinter import *
 from utils.ui import Colors, font_title
-from utils.logic import *
+from utils.getters import *
 
 class Dashboard(CTkFrame):
     def __init__(self, master: CTkFrame):
