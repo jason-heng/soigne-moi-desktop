@@ -1,4 +1,6 @@
 from datetime import datetime
+from utils.timeHandling import to_local_datetime
+
 
 class Patient:
     def __init__(self, patient_info : dict) -> None:
@@ -22,5 +24,5 @@ class Stay:
         self.patient = Patient(stay_info["patient"])
         self.doctor = Doctor(stay_info["doctor"])
         self.reason : str = stay_info["reason"]
-        self.start = datetime.strptime(stay_info["start"], "%Y-%m-%dT%H:%M:%S.%fZ")
-        self.end = datetime.strptime(stay_info["end"], "%Y-%m-%dT%H:%M:%S.%fZ")
+        self.start = to_local_datetime(stay_info["start"])
+        self.end = to_local_datetime(stay_info["end"])
