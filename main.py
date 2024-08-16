@@ -1,6 +1,5 @@
 from pages.login import LoginPage
 from pages.home import HomePage
-from utils.auth import login_verif
 from utils.ui import Colors, center
 
 import customtkinter as ctk
