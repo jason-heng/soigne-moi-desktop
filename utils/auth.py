@@ -3,10 +3,14 @@ from config import API_URL
 import json
 
 def login_verif(email : str, password : str) -> dict[str, str | None] :
-    req = requests.post(
-        url=API_URL,
-        json={"email" : email, "password" : password}
-    )
+    try:
+        req = requests.post(
+            url=f"{API_URL}/secretary/auth",
+            json={"email" : email, "password" : password}
+        )
+    except requests.exceptions.ConnectionError:
+        return {"error_text" : "Veuillez verifier votre connexion internet", "token" : None} 
+        
     token = req.json()["token"] if req.status_code == 200 else None
 
     try:
