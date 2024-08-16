@@ -4,11 +4,6 @@ import requests
 
 from config import API_URL
 
-def get_token() -> str | None:
-    with open("session.json", "r") as file:
-        session = json.load(file)
-    return session if session else None
-
 
 def get_all_stays(token : str) -> list[Stay] | None:
     headers = {"Authorization": f"Bearer {token}"}
