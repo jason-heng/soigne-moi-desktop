@@ -102,7 +102,6 @@ class ConnexionBox(CTkFrame):
 
         else:
             error_text = request_info["error_text"]
-            print(error_text)
             if isinstance(error_text, list):
 
                 error_text = error_text[0]

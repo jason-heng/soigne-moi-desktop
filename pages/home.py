@@ -1,6 +1,6 @@
 from customtkinter import *
 from utils.ui import Colors, font_text, font_title
-from utils.logic import *
+from utils.getters import *
 from pages.components.patientsList import PatientsList
 
 class HomePage(CTkFrame):
