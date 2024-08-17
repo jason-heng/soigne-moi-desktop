@@ -29,7 +29,7 @@ class PatientsList(CTkScrollableFrame):
         self.view()
 
     def view(self):
-        patients_list = get_all_patients()
+        patients_list = []
         pos_y = 0
         for patient in patients_list:
             patient_card = PatientCard(self, patient)

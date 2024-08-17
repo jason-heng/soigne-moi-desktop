@@ -1,4 +1,5 @@
 from pages.home import HomePage
+from utils.objects import Secretary
 from utils.ui import font_title, font_text
 from utils.ui import Colors, focus_event
 from utils.auth import login_verif, update_token
@@ -88,12 +89,13 @@ class ConnexionBox(CTkFrame):
             email=self.entered_email, 
             password=self.entered_password
         )
-        token = request_info["token"]
-        secretary = request_info["secretary"]
 
+        token = request_info["token"]
         if token:
+            secretary = Secretary(request_info["secretary"])
+            secretary_info = request_info["secretary"]
             if self.stay_connected.get():
-                update_token(token, secretary)
+                update_token(token, secretary_info)
 
             HomePage(
                 window=self.window,
