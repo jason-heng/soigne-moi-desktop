@@ -26,3 +26,10 @@ class Stay:
         self.reason : str = stay_info["reason"]
         self.start = to_local_datetime(stay_info["start"])
         self.end = to_local_datetime(stay_info["end"])
+
+
+class Secretary:
+    def __init__(self, secretary_info : dict) -> None:
+        self.id : int = secretary_info["id"]
+        self.first_name : int = secretary_info["firstName"]
+        self.last_name : int = secretary_info["lastName"]

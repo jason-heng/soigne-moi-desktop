@@ -89,14 +89,16 @@ class ConnexionBox(CTkFrame):
             password=self.entered_password
         )
         token = request_info["token"]
+        secretary = request_info["secretary"]
 
         if token:
             if self.stay_connected.get():
-                update_token(token)
+                update_token(token, secretary)
 
             HomePage(
                 window=self.window,
                 token=token,
+                secretary=secretary,
                 past_page=self.master
             )
 

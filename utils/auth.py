@@ -1,6 +1,8 @@
-import requests
 from config import API_URL
+from utils.objects import Secretary
+
 import json
+import requests
 
 def login_verif(email : str, password : str) -> dict[str, str | None] :
     try:
@@ -12,6 +14,7 @@ def login_verif(email : str, password : str) -> dict[str, str | None] :
         return {"error_text" : "Veuillez verifier votre connexion internet", "token" : None} 
         
     token = req.json()["token"] if req.status_code == 200 else None
+    secretary_info = req.json()["secretary"] if req.status_code == 200 else None
 
     try:
         errors_dict = req.json()["errors"]
@@ -20,11 +23,11 @@ def login_verif(email : str, password : str) -> dict[str, str | None] :
     except KeyError:
         error_text = None
 
-    return {"error_text" : error_text, "token" : token}
+    return {"error_text" : error_text, "token" : token, "secretary" : secretary_info}
         
 
-def update_token(token : str) -> None:
+def update_token(token : str, secretary_info: dict) -> None:
     with open("session.json", "w") as file:
-        json.dump({"token" : token}, file)
+        json.dump({"token" : token, "secretary": secretary_info}, file)
 
 

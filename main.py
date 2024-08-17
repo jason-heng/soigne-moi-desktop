@@ -1,5 +1,6 @@
 from pages.login import LoginPage
 from pages.home import HomePage
+from utils.objects import Secretary
 from utils.ui import Colors, center
 
 import customtkinter as ctk
@@ -19,8 +20,9 @@ class App(CTk):
         with open("session.json", "r") as f:
             config = json.load(f)
             if config and config["token"]:
-                token = config["token"]
-                HomePage(self, token)
+                token: str = config["token"]
+                secretary = Secretary(config["secretary"])
+                HomePage(self, token, secretary)
             else:
                 LoginPage(self)
 

@@ -1,10 +1,12 @@
-from customtkinter import *
 from utils.ui import Colors, font_text, font_title
 from utils.getters import *
 from pages.components.patientsList import PatientsList
+from utils.objects import Secretary
+
+from customtkinter import *
 
 class HomePage(CTkFrame):
-    def __init__(self, window: CTk, token : str, past_page: CTkFrame = None) -> None:
+    def __init__(self, window: CTk, token : str, secretary: Secretary, past_page: CTkFrame = None) -> None:
         if past_page:
             past_page.destroy()
 
