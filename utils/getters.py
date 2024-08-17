@@ -18,8 +18,6 @@ def get_all_stays(token : str) -> list[Stay] | None:
         headers=headers,
     )
     stays_list = []
-    file = open("test.json", "w")
-    json.dump(req.json(), file)
 
     for stay_info in req.json()["stays"]:
         stay = Stay(stay_info)
@@ -66,19 +64,23 @@ def get_filtered_stays(token : str) -> dict[ str, list[Stay] ]:
     return {"current" : current_stays, "today_comings" :  today_comings, "today_leaves" : today_leaves}
 
 
-def get_all_patients(token : str) -> list[Patient] | None:
+def get_patient(patient_id : str, token : str) -> Patient | None:
     """
-    returns all patients from the website api
+    return all the stays in the website database as a list containing
+    the stays as Stay objects
     """
-    stays_list = get_all_stays(token)
-    patients_list = []
-    for stay in stays_list:
-        if stay.patient not in patients_list:
-            patients_list.append(stay.patient)
 
-    return patients_list
+    headers = {"Authorization": f"Bearer {token}"}
+    req = requests.get(
+        url=f"{API_URL}/secretary/patient/{patient_id}",
+        headers=headers,
+    )
 
+    if req.status_code == 200:
+        patient_info = req.json()["patient"]
+        patient = Patient(patient_info, True)
 
-def get_patient(patient_id, token) -> Patient | None:
-    return []
+        return patient
+
+    return None
 
