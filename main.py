@@ -17,14 +17,17 @@ class App(CTk):
         self.maxsize(width=1280, height=720)
         center(1120, 620, self)
 
-        with open("session.json", "r") as f:
-            config = json.load(f)
-            if config and config["token"]:
-                token: str = config["token"]
-                secretary = Secretary(config["secretary"])
-                HomePage(self, token, secretary)
-            else:
-                LoginPage(self)
+        try:
+            with open("session.json", "r") as f:
+                config = json.load(f)
+                if config and config["token"]:
+                    token: str = config["token"]
+                    secretary = Secretary(config["secretary"])
+                    HomePage(self, token, secretary)
+                else:
+                    LoginPage(self)
+        except FileNotFoundError:
+            LoginPage(self)
 
 
 if __name__ == "__main__":
