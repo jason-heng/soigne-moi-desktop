@@ -92,8 +92,8 @@ class ConnexionBox(CTkFrame):
 
         token = request_info["token"]
         if token:
-            secretary = Secretary(request_info["secretary"])
             secretary_info = request_info["secretary"]
+            secretary = Secretary(secretary_info)
             if self.stay_connected.get():
                 update_token(token, secretary_info)
 
@@ -107,7 +107,6 @@ class ConnexionBox(CTkFrame):
         else:
             error_text = request_info["error_text"]
             if isinstance(error_text, list):
-
                 error_text = error_text[0]
 
             if self.error_label:
@@ -116,6 +115,7 @@ class ConnexionBox(CTkFrame):
             self.error_label = CTkLabel(self, font=font_text(14), text_color=Colors.RED, text=error_text)
 
             self.error_label.place(relx=0.5, rely=0.2, anchor=CENTER)
+
 
 
 

@@ -11,17 +11,20 @@ def login_verif(email : str, password : str) -> dict[str, str | None] :
             json={"email" : email, "password" : password}
         )
     except requests.exceptions.ConnectionError:
-        return {"error_text" : "Veuillez verifier votre connexion internet", "token" : None} 
-        
-    token = req.json()["token"] if req.status_code == 200 else None
-    secretary_info = req.json()["secretary"] if req.status_code == 200 else None
+        return {"error_text" : "Veuillez verifier votre connexion internet", "token" : None, "secretary": None} 
 
-    try:
-        errors_dict = req.json()["errors"]
-        error_key = list(errors_dict)[0]
-        error_text = errors_dict[error_key]
-    except KeyError:
+    if req.status_code == 200:
+        token = req.json()["token"]
+        secretary_info = req.json()["secretary"] 
         error_text = None
+    else:
+        token, secretary_info = None, None
+        try:
+            errors_dict = req.json()["errors"]
+            error_key = list(errors_dict)[0]
+            error_text = errors_dict[error_key]
+        except KeyError:
+            error_text = "something went wrong, try again later"
 
     return {"error_text" : error_text, "token" : token, "secretary" : secretary_info}
         
