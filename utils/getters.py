@@ -18,6 +18,7 @@ def get_all_stays(token : str) -> list[Stay] | None:
         headers=headers,
     )
     stays_list = []
+    print(req.status_code)
 
     for stay_info in req.json()["stays"]:
         stay = Stay(stay_info)
@@ -84,3 +85,23 @@ def get_patient(patient_id : str, token : str) -> Patient | None:
 
     return None
 
+
+def get_all_patients(token : str) -> list[Patient] | None:
+    """
+    return all the patients in the website database as a list containing
+    the patients as Patient objects
+    """
+
+    headers = {"Authorization": f"Bearer {token}"}
+    req = requests.get(
+        url=f"{API_URL}/secretary/patient",
+        headers=headers,
+    )
+    patients_list = []
+    print(req.status_code)
+
+    for patient_info in req.json()["patients"]:
+        patient = Patient(patient_info, True)
+        patients_list.append(patient)
+
+    return patients_list
