@@ -13,8 +13,7 @@ class App(CTk):
         super().__init__(fg_color=Colors.TERTIARY)
         self.title("SoigneMoi")
 
-        self.minsize(width=800, height=675)
-        self.maxsize(width=1280, height=720)
+        self.resizable(False, False)
         center(1120, 620, self)
 
         try:
