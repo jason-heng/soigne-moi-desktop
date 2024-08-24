@@ -29,7 +29,7 @@ class ConnexionBox(CTkFrame):
             width=280,
             height=34
         )
-        buttom_border_email = CTkFrame(self.email_entry, border_color=Colors.PRIMARY, height=2, border_width=2, fg_color=Colors.PRIMARY)
+        buttom_border_email = CTkFrame(self.email_entry, border_color=Colors.OLD_PRIMARY, height=2, border_width=2, fg_color=Colors.OLD_PRIMARY)
         buttom_border_email.place(relwidth=1, rely=0.9)
 
         self.password_entry = CTkEntry(
@@ -45,7 +45,7 @@ class ConnexionBox(CTkFrame):
             height=34,
             show="*"
         )
-        buttom_border_password = CTkFrame(self.password_entry, border_color=Colors.PRIMARY, height=2, border_width=2, fg_color=Colors.PRIMARY)
+        buttom_border_password = CTkFrame(self.password_entry, border_color=Colors.OLD_PRIMARY, height=2, border_width=2, fg_color=Colors.OLD_PRIMARY)
         buttom_border_password.place(relwidth=1, rely=0.9)
 
         self.stay_connected = CTkCheckBox(
@@ -58,14 +58,14 @@ class ConnexionBox(CTkFrame):
             checkbox_height=16,
             border_width=2,
             border_color=Colors.SECONDARY_LIGHT,
-            fg_color=Colors.PRIMARY,
+            fg_color=Colors.OLD_PRIMARY,
             hover_color=Colors.PRIMARY_HOVER
         )
         connect_button = CTkButton(
             self,
             text="Se Connecter",
             text_color=Colors.TERTIARY,
-            fg_color=Colors.PRIMARY,
+            fg_color=Colors.OLD_PRIMARY,
             font=font_title(14),
             width=280,
             height=42,
@@ -133,7 +133,7 @@ class LoginPage(CTkFrame):
 
     def view(self):
         logo_text = CTkLabel(
-            self, text="SoigneMoi", font=font_title(32), text_color=Colors.PRIMARY
+            self, text="SoigneMoi", font=font_title(32), text_color=Colors.OLD_PRIMARY
         )
         self.connexion_box = ConnexionBox(self.window, self)
 

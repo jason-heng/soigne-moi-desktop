@@ -2,8 +2,9 @@ from customtkinter import CTkFont, CTkFrame
 from PIL import ImageFont
 
 class Colors:
-    PRIMARY = "#3E7CB1"
+    PRIMARY = "#2563EB"
     PRIMARY_HOVER = "#336B9B"
+    OLD_PRIMARY = "#25567f"
 
     SECONDARY = "#2D2D2A"
     SECONDARY_LIGHT = "#4F4F49"
@@ -15,18 +16,19 @@ class Colors:
     LIGHT_GRAY = "#E5E7EB"
 
     RED = "#b51d18"
+    SILVER = "#878686"
 
 def font_title(size: int) -> CTkFont:
     return CTkFont(family="Helvetica", size=size, weight="bold")
 
 def font_text(size: int) -> CTkFont:
-    return CTkFont(family="Roboto", size=size, weight="bold")
+    return CTkFont(family="Roboto", size=size)
 
 def focus_event(widget):
-        for sub_widget in widget.winfo_children():
-            sub_widget.bind("<ButtonPress>", lambda _:widget.focus())
-            if widget.winfo_children():
-                focus_event(sub_widget)
+    for sub_widget in widget.winfo_children():
+        sub_widget.bind("<ButtonPress>", lambda _:widget.focus())
+        if widget.winfo_children():
+            focus_event(sub_widget)
 
 def clear(frame) -> None:
     for widget in frame.winfo_children():
