@@ -42,3 +42,9 @@ def center(w, h, frame) -> None:
     y = (hs / 2) - (h / 2)
     frame.geometry(f"{w}x{h}+{x}+{y}")
     clear(frame)
+
+def change_button_text_color(widget_str: str, button_paths : dict, color):
+                for button_str in list(button_paths):
+                    if widget_str.startswith(button_str):
+                        widget_str = button_str
+                button_paths[widget_str].configure(text_color=color)

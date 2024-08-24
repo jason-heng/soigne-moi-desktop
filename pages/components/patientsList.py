@@ -1,5 +1,5 @@
 from customtkinter import *
-from utils.ui import Colors, font_title, font_text, clear
+from utils.ui import Colors, font_title, font_text, clear, change_button_text_color
 from utils.getters import *
 import tkinter
 
@@ -99,15 +99,9 @@ class PatientsList(CTkFrame):
             )
 
             button_paths[str(patient_button)] = patient_button
-
-            def change_button_text_color(widget_str: str, color):
-                for button_str in list(button_paths):
-                    if widget_str.startswith(button_str):
-                        widget_str = button_str
-                button_paths[widget_str].configure(text_color=color)
             
-            patient_button.bind("<Enter>", lambda e: change_button_text_color(str(e.widget), Colors.PRIMARY))
-            patient_button.bind("<Leave>", lambda e: change_button_text_color(str(e.widget), Colors.SECONDARY))
+            patient_button.bind("<Enter>", lambda e: change_button_text_color(str(e.widget), button_paths, Colors.PRIMARY))
+            patient_button.bind("<Leave>", lambda e: change_button_text_color(str(e.widget), button_paths, Colors.SECONDARY))
             patient_button.place(x = 5, y = 7)
 
             self.patient_buttons[patient_button] = patient.id
