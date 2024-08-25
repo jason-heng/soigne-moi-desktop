@@ -18,7 +18,6 @@ def get_all_stays(token : str) -> list[Stay] | None:
         headers=headers,
     )
     stays_list = []
-    print(req.status_code)
 
     for stay_info in req.json()["stays"]:
         stay = Stay(stay_info)
@@ -42,7 +41,7 @@ def get_patient_stays(patient_id : int, token : str) -> list[Stay]:
     return patient_stays
 
 
-def get_filtered_stays(token : str) -> dict[ str, list[Stay] ]:
+def get_filtered_stays(token : str) -> list[ list[Stay] ]:
     """
     returns stays filtered by their start and end dates
     return in the following form [ current_stays, today_comings, today_leaves ]
@@ -62,7 +61,7 @@ def get_filtered_stays(token : str) -> dict[ str, list[Stay] ]:
         elif today_date == leave_date:
             today_leaves.append(stay)
 
-    return {"current" : current_stays, "today_comings" :  today_comings, "today_leaves" : today_leaves}
+    return [current_stays, today_comings, today_leaves]
 
 
 def get_patient(patient_id : str, token : str) -> Patient | None:
@@ -98,7 +97,6 @@ def get_all_patients(token : str) -> list[Patient] | None:
         headers=headers,
     )
     patients_list = []
-    print(req.status_code)
 
     for patient_info in req.json()["patients"]:
         patient = Patient(patient_info, True)
