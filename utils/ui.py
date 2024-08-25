@@ -3,17 +3,18 @@ from PIL import ImageFont
 
 class Colors:
     PRIMARY = "#2563EB"
-    PRIMARY_HOVER = "#336B9B"
+    PRIMARY_HOVER = "#063A9B"
     OLD_PRIMARY = "#25567f"
 
     SECONDARY = "#2D2D2A"
     SECONDARY_LIGHT = "#4F4F49"
 
-    TERTIARY = "#F9F7F3"
+    TERTIARY = "#FFFDFD"
     TERTIARY_LIGHT = "#F9F7F3"
 
     WHITE = "#FFFFFF"
     LIGHT_GRAY = "#E5E7EB"
+    SILVER_LIGHT = "#b5b5b5"
 
     RED = "#b51d18"
     SILVER = "#878686"
