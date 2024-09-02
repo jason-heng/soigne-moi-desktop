@@ -58,4 +58,4 @@ class Prescription:
     def __init__(self, prescription_info : dict) -> None:
         self.start = to_local_datetime(prescription_info["start"])
         self.end: datetime = to_local_datetime(prescription_info["end"])
-        self.drugs: list[Drug] = prescription_info["end"]
+        self.drugs: list[Drug] = prescription_info["drugs"]
