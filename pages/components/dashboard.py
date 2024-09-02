@@ -28,6 +28,7 @@ class HomeDashboard(CTkFrame):
         current.place(x=501, y=0, relheight=1, relwidth = 0.29)
 
 
+
 class PatientSection(CTkFrame):
     def __init__(self, master: CTkFrame, token: str, title: str, type_index: int):
         super().__init__(
@@ -126,7 +127,7 @@ class PatientSection(CTkFrame):
                 ),
             )
 
-            motif = [chara for chara in f"""Motif: "{stay.reason} {stay.reason}" """]
+            motif = [chara for chara in f"""Motif: "{stay.reason}" """]
             if len(motif) > 35:
                 motif = motif[:32]
                 motif.append("...")
@@ -137,7 +138,7 @@ class PatientSection(CTkFrame):
                 text_color=Colors.SECONDARY_LIGHT,
                 text= "".join(motif),
             )
-            patient_card.pack(pady=10)
+            patient_card.pack(pady=6)
             card_title.place(x=10, y=6)
             card_reason.place(x=10, y=32)
 
