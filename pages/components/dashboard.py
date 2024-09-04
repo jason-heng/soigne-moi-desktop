@@ -15,13 +15,14 @@ class HomeDashboard(CTkFrame):
 
         self.master  =  master
         self.token = token
+        self.stays_list = get_filtered_stays(self.token)
 
         self.view()
 
     def view(self):
-        enteries = PatientSection(self, self.token, "Entrées", 1)
-        leaves = PatientSection(self, self.token, "Sorties", 2)
-        current = PatientSection(self, self.token, "Séjours en cours", 0)
+        enteries = PatientSection(self, self.token, "Entrées", 1, self.stays_list)
+        leaves = PatientSection(self, self.token, "Sorties", 2, self.stays_list)
+        current = PatientSection(self, self.token, "Séjours en cours", 0, self.stays_list)
 
         enteries.place(x=0, y=0, relheight=1, relwidth = 0.29)
         leaves.place(x=250, y=0, relheight=1, relwidth = 0.29)
@@ -30,7 +31,7 @@ class HomeDashboard(CTkFrame):
 
 
 class PatientSection(CTkFrame):
-    def __init__(self, master: CTkFrame, token: str, title: str, type_index: int):
+    def __init__(self, master: CTkFrame, token: str, title: str, type_index: int, stays_list):
         super().__init__(
             master, 
             corner_radius = 8,
@@ -46,6 +47,7 @@ class PatientSection(CTkFrame):
         self.token = token
         self.type_index = type_index
         self.current_page_index = 0
+        self.stays_list = stays_list
 
         self.view()
 
@@ -70,11 +72,15 @@ class PatientSection(CTkFrame):
             text=">"
         )
 
-        self.load()
+        self.load(self.stays_list)
     
-    def load(self):
+
+    def load(self, stays_list=None):
         clear(self.patients_frame)
-        stays_list = get_filtered_stays(self.token)
+
+        if not stays_list:
+            stays_list = get_filtered_stays(self.token)
+
         stays = stays_list[self.type_index]
         pages: list[list[Stay]] = []
 

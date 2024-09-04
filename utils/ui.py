@@ -1,5 +1,7 @@
-from customtkinter import CTkFont, CTkFrame
-from PIL import ImageFont
+from pages import home
+
+from customtkinter import CTkFont, CTkFrame, RIGHT, CTkLabel, CENTER, CTkImage, CTkButton
+from PIL import Image
 
 class Colors:
     PRIMARY = "#2563EB"
@@ -45,7 +47,76 @@ def center(w, h, frame) -> None:
     clear(frame)
 
 def change_button_text_color(widget_str: str, button_paths : dict, color):
-                for button_str in list(button_paths):
-                    if widget_str.startswith(button_str):
-                        widget_str = button_str
-                button_paths[widget_str].configure(text_color=color)
+    for button_str in list(button_paths):
+        if widget_str.startswith(button_str):
+            widget_str = button_str
+    button_paths[widget_str].configure(text_color=color)
+
+
+def place_loading_frame(page_content : CTkFrame):
+    clear(page_content)
+
+    logo_image = CTkImage(light_image=Image.open("assets/images/logo.png"), size=(47, 40))
+    logo_label = CTkLabel(page_content, image=logo_image, text=None)
+
+    loading_label = CTkLabel(
+        page_content, 
+        text="Chargement...", 
+        text_color=Colors.PRIMARY, 
+        font=font_title(32),
+    )
+    loading_label.place(relx=0.5, rely=0.5, anchor=CENTER)
+    logo_label.place(relx=0.31, rely=0.502, anchor=CENTER)
+
+
+
+def place_page_top(title: str, page_content: CTkFrame, disconnect, refresh, handle_place_homepage, place_home_button):
+    title = CTkLabel(page_content, text=title, font=font_title(22), text_color=Colors.SECONDARY)
+    title.place(x=(100 if place_home_button else 5), y=40)
+
+    home_button = CTkButton(
+        page_content,
+        width=85,
+        height=30,
+        fg_color=Colors.WHITE,
+        text="Acceuil",
+        font=font_title(16),
+        text_color=Colors.PRIMARY,
+        hover_color=Colors.PRIMARY_HOVER,
+        border_color=Colors.PRIMARY,
+        border_width=2,
+        corner_radius=3,
+        command=handle_place_homepage
+    )
+
+    refresh_button = CTkButton(
+        page_content,
+        width=120,
+        height=30,
+        fg_color=Colors.PRIMARY,
+        text="Rafraîchir",
+        font=font_title(16),
+        text_color=Colors.WHITE,
+        hover_color=Colors.PRIMARY_HOVER,
+        corner_radius=3,
+        command=refresh
+    )
+
+    disconnect_button = CTkButton(
+        page_content,
+        width=120,
+        height=30,
+        fg_color=Colors.RED,
+        text="Déconnexion",
+        font=font_title(15),
+        text_color=Colors.WHITE,
+        hover_color="#802020",
+        corner_radius=3,
+        command=disconnect
+    )
+
+    disconnect_button.place(relx=0.8, y=40)
+    refresh_button.place(relx=0.62, y=40)
+
+    if place_home_button:
+        home_button.place(x=0, y=40)

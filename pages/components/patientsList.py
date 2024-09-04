@@ -1,7 +1,9 @@
-from customtkinter import *
-from utils.ui import Colors, font_title, font_text, clear, change_button_text_color
+from utils.ui import Colors, font_title, font_text, clear, change_button_text_color, place_loading_frame
 from utils.getters import *
-import tkinter
+from pages.components.patientDetails import PatientDetails
+
+import threading
+from customtkinter import *
 
 
 class PatientsList(CTkFrame):
@@ -115,6 +117,7 @@ class PatientsList(CTkFrame):
             )
 
             button_paths[str(patient_button)] = patient_button
+            patient_button.bind("<ButtonPress-1>", lambda e : self.handle_patient_button(self.master.page_content, str(e.widget), self.token))
 
             patient_button.bind(
                 "<Enter>",
@@ -142,7 +145,7 @@ class PatientsList(CTkFrame):
             )
             patient_button.place(x=5, y=7)
 
-            self.patient_buttons[patient_button] = patient.id
+            self.patient_buttons[str(patient_button)] = patient.id
 
             CTkLabel(
                 patient_card,
@@ -150,6 +153,7 @@ class PatientsList(CTkFrame):
                 font=font_text(12),
                 text_color=Colors.PRIMARY,
             ).place(x=21, y=40)
+
 
         page_management_frame = CTkFrame(
             self, fg_color=Colors.TERTIARY, height=35, width=110
@@ -204,7 +208,22 @@ class PatientsList(CTkFrame):
         if num:
             self.current_page_index += num
             self.load()
-        if self.SelectedPatient:
-            for patient_buttons in self.patient_buttons:
-                if self.SelectedPatient == self.patient_buttons[patient_buttons]:
-                    self.select(patient_buttons)
+
+
+    def handle_patient_button(self, page_content, widget_str, token):
+        process_thread = threading.Thread(target=lambda: self.place_patient_details(page_content, widget_str, token))
+        process_thread.start()
+        place_loading_frame(page_content)
+
+
+    def place_patient_details(self, page_content, widget_str : str, token : str):
+        for button_str in list(self.patient_buttons):
+            if widget_str.startswith(button_str):
+                widget_str = button_str
+
+        patient_id = self.patient_buttons[widget_str]
+
+        patient_details = PatientDetails(self.window, page_content, patient_id, token)
+        page_content.placed_item = patient_details
+        patient_details.place(x=0, y=88)
+

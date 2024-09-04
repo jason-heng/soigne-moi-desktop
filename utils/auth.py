@@ -23,7 +23,7 @@ def login_verif(email : str, password : str) -> dict[str, str | None] :
             errors_dict = req.json()["errors"]
             error_key = list(errors_dict)[0]
             error_text = errors_dict[error_key]
-        except KeyError:
+        except:
             error_text = "something went wrong, try again later"
 
     return {"error_text" : error_text, "token" : token, "secretary" : secretary_info}
