@@ -1,6 +1,6 @@
 from pages import home
 
-from customtkinter import CTkFont, CTkFrame, RIGHT, CTkLabel, CENTER, CTkImage, CTkButton
+from customtkinter import CTkFont, CTkFrame, RIGHT, CTkLabel, CENTER, CTkImage, CTkButton, CTk
 from PIL import Image
 
 class Colors:
@@ -66,13 +66,16 @@ def place_loading_frame(page_content : CTkFrame):
         font=font_title(32),
     )
     loading_label.place(relx=0.5, rely=0.5, anchor=CENTER)
-    logo_label.place(relx=0.31, rely=0.502, anchor=CENTER)
+    logo_label.place(relx=0.3, rely=0.502, anchor=CENTER)
 
 
 
-def place_page_top(title: str, page_content: CTkFrame, disconnect, refresh, handle_place_homepage, place_home_button):
-    title = CTkLabel(page_content, text=title, font=font_title(22), text_color=Colors.SECONDARY)
-    title.place(x=(100 if place_home_button else 5), y=40)
+def place_page_top(title: str, page_content: CTkFrame, disconnect, handle_place_homepage, place_home_button):
+
+    title = title if len(title) <=32 else f"{title[:29]}..."
+
+    title_label = CTkLabel(page_content, text=title, font=font_title(22), text_color=Colors.SECONDARY)
+    title_label.place(x=(100 if place_home_button else 5), y=40)
 
     home_button = CTkButton(
         page_content,
@@ -82,24 +85,11 @@ def place_page_top(title: str, page_content: CTkFrame, disconnect, refresh, hand
         text="Acceuil",
         font=font_title(16),
         text_color=Colors.PRIMARY,
-        hover_color=Colors.PRIMARY_HOVER,
+        hover_color=Colors.LIGHT_GRAY,
         border_color=Colors.PRIMARY,
         border_width=2,
         corner_radius=3,
         command=handle_place_homepage
-    )
-
-    refresh_button = CTkButton(
-        page_content,
-        width=120,
-        height=30,
-        fg_color=Colors.PRIMARY,
-        text="Rafraîchir",
-        font=font_title(16),
-        text_color=Colors.WHITE,
-        hover_color=Colors.PRIMARY_HOVER,
-        corner_radius=3,
-        command=refresh
     )
 
     disconnect_button = CTkButton(
@@ -116,7 +106,24 @@ def place_page_top(title: str, page_content: CTkFrame, disconnect, refresh, hand
     )
 
     disconnect_button.place(relx=0.8, y=40)
-    refresh_button.place(relx=0.62, y=40)
 
     if place_home_button:
         home_button.place(x=0, y=40)
+
+
+def place_loading_frame_fullpage(window: CTk):
+
+    logo_image = CTkImage(light_image=Image.open("assets/images/logo.png"), size=(47, 40))
+    logo_label = CTkLabel(window, image=logo_image, text=None)
+
+    loading_label = CTkLabel(
+        window, 
+        text="Chargement...", 
+        text_color=Colors.PRIMARY, 
+        font=font_title(32),
+    )
+
+    loading_label.place(relx=0.5, rely=0.5, anchor=CENTER)
+    logo_label.place(relx=0.37, rely=0.501, anchor=CENTER)
+
+    return [loading_label, logo_label]
