@@ -1,7 +1,7 @@
+import threading
 from pages.home import HomePage
 from utils.objects import Secretary
-from utils.ui import font_title, font_text
-from utils.ui import Colors, focus_event
+from utils.ui import font_title, font_text, Colors, focus_event, clear
 from utils.auth import login_verif, update_token
 
 from customtkinter import *
@@ -61,7 +61,7 @@ class ConnexionBox(CTkFrame):
             fg_color=Colors.OLD_PRIMARY,
             hover_color=Colors.PRIMARY_HOVER
         )
-        connect_button = CTkButton(
+        self.connect_button = CTkButton(
             self,
             text="Se Connecter",
             text_color=Colors.TERTIARY,
@@ -70,7 +70,7 @@ class ConnexionBox(CTkFrame):
             width=280,
             height=42,
             corner_radius=5,
-            command=self.handle_login
+            command=self.handle_connect_button
         )
 
         self.error_label = None
@@ -79,8 +79,15 @@ class ConnexionBox(CTkFrame):
         self.email_entry.place(relx=0.5, rely=0.3, anchor=CENTER)
         self.password_entry.place(relx=0.5, rely=0.5, anchor=CENTER)
         self.stay_connected.place(relx=0.1, rely=0.61)
-        connect_button.place(relx=0.5, rely=0.88, anchor=CENTER)
+        self.connect_button.place(relx=0.5, rely=0.88, anchor=CENTER)
     
+    
+    def handle_connect_button(self):
+        self.connect_button.configure(text="chargement...")
+        process_thread = threading.Thread(target=self.handle_login)
+        process_thread.start()
+
+
     def handle_login(self):
         self.entered_password = self.password_entry.get()
         self.entered_email = self.email_entry.get()
@@ -101,10 +108,11 @@ class ConnexionBox(CTkFrame):
                 window=self.window,
                 token=token,
                 secretary=secretary,
-                past_page=self.master
             )
 
         else:
+            self.connect_button.configure(text="Se Connecter")
+            
             error_text = request_info["error_text"]
             if isinstance(error_text, list):
                 error_text = error_text[0]
@@ -120,9 +128,9 @@ class ConnexionBox(CTkFrame):
 
 
 class LoginPage(CTkFrame):
-    def __init__(self, window: CTk, past_page: CTkFrame = None) -> None:
-        if past_page:
-            past_page.destroy()
+    def __init__(self, window: CTk) -> None:
+
+        clear(window)
 
         super().__init__(window, corner_radius=0, fg_color=Colors.TERTIARY)
         self.pack(fill="both", expand=True)
