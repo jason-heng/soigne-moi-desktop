@@ -1,48 +1,74 @@
+import threading
 from customtkinter import *
-from utils.ui import Colors, font_title, clear, font_text, change_button_text_color
+from utils.ui import (
+    Colors,
+    font_title,
+    clear,
+    font_text,
+    change_button_text_color,
+    place_loading_frame,
+)
 from utils.getters import *
+from pages.components.patientDetails import PatientDetails
 
 
 class HomeDashboard(CTkFrame):
-    def __init__(self, master: CTkFrame, token: str):
+    def __init__(self, window: CTk, master: CTkFrame, token: str, stays=None):
         super().__init__(
-            master, 
-            corner_radius = 0, 
-            fg_color = Colors.TERTIARY,
+            master,
+            corner_radius=0,
+            fg_color=Colors.TERTIARY,
             height=500,
             width=833,
-            )
+        )
 
-        self.master  =  master
+        self.window = window
+        self.master = master
         self.token = token
-        self.stays_list = get_filtered_stays(self.token)
+        self.stays_list = stays
+        if not self.stays_list:
+            self.stays_list = get_filtered_stays(token=self.token)
 
         self.view()
 
     def view(self):
-        enteries = PatientSection(self, self.token, "Entrées", 1, self.stays_list)
-        leaves = PatientSection(self, self.token, "Sorties", 2, self.stays_list)
-        current = PatientSection(self, self.token, "Séjours en cours", 0, self.stays_list)
+        enteries = PatientSection(
+            self.window, self, self.token, "Entrées", 1, self.stays_list
+        )
+        leaves = PatientSection(
+            self.window, self, self.token, "Sorties", 2, self.stays_list
+        )
+        current = PatientSection(
+            self.window, self, self.token, "Séjours en cours", 0, self.stays_list
+        )
 
-        enteries.place(x=0, y=0, relheight=1, relwidth = 0.29)
-        leaves.place(x=250, y=0, relheight=1, relwidth = 0.29)
-        current.place(x=501, y=0, relheight=1, relwidth = 0.29)
-
+        enteries.place(x=0, y=0, relheight=1, relwidth=0.29)
+        leaves.place(x=250, y=0, relheight=1, relwidth=0.29)
+        current.place(x=501, y=0, relheight=1, relwidth=0.29)
 
 
 class PatientSection(CTkFrame):
-    def __init__(self, master: CTkFrame, token: str, title: str, type_index: int, stays_list):
+    def __init__(
+        self,
+        window: CTk,
+        master: CTkFrame,
+        token: str,
+        title: str,
+        type_index: int,
+        stays_list,
+    ):
         super().__init__(
-            master, 
-            corner_radius = 8,
-            fg_color = Colors.WHITE,
+            master,
+            corner_radius=8,
+            fg_color=Colors.WHITE,
             border_color=Colors.SILVER_LIGHT,
             border_width=1.5,
             height=500,
             width=260,
-            )
+        )
 
-        self.master  =  master
+        self.window = window
+        self.master = master
         self.title = title
         self.token = token
         self.type_index = type_index
@@ -69,11 +95,10 @@ class PatientSection(CTkFrame):
             height=20,
             corner_radius=5,
             fg_color=Colors.PRIMARY,
-            text=">"
+            text=">",
         )
 
         self.load(self.stays_list)
-    
 
     def load(self, stays_list=None):
         clear(self.patients_frame)
@@ -85,13 +110,14 @@ class PatientSection(CTkFrame):
         pages: list[list[Stay]] = []
 
         button_paths = {}
+        self.patient_buttons = {}
 
         for stay in stays:
             if not pages or len(pages[-1]) == 4:
                 pages.append([stay])
             else:
                 pages[-1].append(stay)
-        
+
         if not pages:
             CTkLabel(
                 self,
@@ -116,9 +142,17 @@ class PatientSection(CTkFrame):
                 font=font_title(18),
                 fg_color=Colors.WHITE,
                 text_color=Colors.SECONDARY,
-                text= f"{stay.patient.first_name} {stay.patient.last_name}",
+                text=f"{stay.patient.first_name} {stay.patient.last_name}",
             )
+            card_title.bind(
+                "<ButtonPress-1>",
+                lambda e: self.handle_patient_button(
+                    self.master.master, str(e.widget), self.token
+                ),
+            )
+
             button_paths[str(card_title)] = card_title
+            self.patient_buttons[str(card_title)] = stay.patient.id
 
             card_title.bind(
                 "<Enter>",
@@ -142,7 +176,7 @@ class PatientSection(CTkFrame):
                 patient_card,
                 font=font_text(12),
                 text_color=Colors.SECONDARY_LIGHT,
-                text= "".join(motif),
+                text="".join(motif),
             )
             patient_card.pack(pady=6)
             card_title.place(x=10, y=6)
@@ -193,8 +227,26 @@ class PatientSection(CTkFrame):
         self.next_page_button.lift(self.patients_frame)
 
 
+    def handle_patient_button(self, page_content, widget_str, token):
+        process_thread = threading.Thread(
+            target=lambda: self.place_patient_details(page_content, widget_str, token)
+        )
+        process_thread.start()
+        place_loading_frame(page_content)
+
+
+    def place_patient_details(self, page_content, widget_str: str, token: str):
+        for button_str in list(self.patient_buttons):
+            if widget_str.startswith(button_str):
+                widget_str = button_str
+
+        patient_id = self.patient_buttons[widget_str]
+
+        patient_details = PatientDetails(self.window, page_content, patient_id, token)
+        page_content.placed_item = patient_details
+        patient_details.place(x=0, y=88)
+
     def update(self, num):
         if num:
             self.current_page_index += num
             self.load()
-        
