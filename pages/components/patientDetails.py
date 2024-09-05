@@ -31,7 +31,6 @@ class PatientDetails(CTkFrame):
             title=f"Informations de {self.patient.first_name} {self.patient.last_name}", 
             page_content=self.page_content, 
             disconnect=self.disconnect,
-            refresh=self.refresh,
             handle_place_homepage=self.home_page.handle_place_homepage,
             place_home_button=True
         )
@@ -45,16 +44,13 @@ class PatientDetails(CTkFrame):
         stays_history.place(x=0, y=0, relheight=1, relwidth=0.29)
         opinions.place(x=250, y=0, relheight=1, relwidth=0.29)
         prescriptions.place(x=501, y=0, relheight=1, relwidth=0.29)
-    
-    def refresh(self):
-        for section in self.page_content.placed_item.winfo_children():
-            section.load()
+
 
     def disconnect(self):
         with open("session.json", "w") as session:
             json.dump({}, session)
 
-        login.LoginPage(self.window, self)
+        login.LoginPage(self.window)
 
 
 

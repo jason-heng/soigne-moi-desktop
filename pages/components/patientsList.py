@@ -7,7 +7,7 @@ from customtkinter import *
 
 
 class PatientsList(CTkFrame):
-    def __init__(self, master: CTkFrame, token: str):
+    def __init__(self, window: CTk, master: CTkFrame, token: str, patients=None):
         super().__init__(
             master,
             corner_radius=0,
@@ -15,13 +15,15 @@ class PatientsList(CTkFrame):
             border_color=Colors.SILVER_LIGHT,
             border_width=2,
         )
-
+        self.window = window
         self.master = master
-        self.window = master.window
         self.token = token
         self.current_page_index = 0
         self.SelectedPatient = None
-        self.patients = get_all_patients(token=self.token)
+        self.patients = patients
+        
+        if not self.patients:
+            self.patients = get_all_patients(token=self.token)
 
         self.view()
 
