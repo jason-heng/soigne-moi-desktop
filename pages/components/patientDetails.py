@@ -81,10 +81,15 @@ class Section(CTkFrame):
             font=font_title(20),
             text_color=Colors.PRIMARY,
         )
-        title.pack(pady=10)
+        title.grid(row=0, column=0, pady=10)
 
-        self.main_frame = CTkFrame(self, width=220, fg_color=Colors.WHITE)
-        self.main_frame.pack(fill="both", expand=True, pady=5, padx=18)
+        self.main_frame = CTkScrollableFrame(
+            self, 
+            width=220, 
+            fg_color=Colors.WHITE, 
+            height=420,
+            )
+        self.main_frame.grid(row=1, column=0, padx=6)
 
         self.next_page_button = CTkButton(
             self,
@@ -106,31 +111,28 @@ class Section(CTkFrame):
 
         if self.title == "Historique des séjours":
             info_list = [
-                f"Début: {stay.start}\nfin: {stay.end}\nMotif: {stay.reason}\nDocteur: Dr.{stay.doctor.last_name}"
+                (
+                    f"Début: {stay.start}", 
+                    f"fin: {stay.end}", 
+                    f"Motif: {stay.reason}", 
+                    f"Docteur: Dr.{stay.doctor.last_name}"
+                )
                 for stay in patient.stays
             ]
 
         elif self.title == "Avis des médecins":
-            info_list = [opinion.title for opinion in patient.opinions]
+            info_list = [(opinion.title, opinion.description) for opinion in patient.opinions]
 
         elif self.title == "Préscriptions":
             info_list = []
             for stay in patient.stays:
-                prescription_details = "\n".join(
-                    [f"- {drug['name']}" for drug in stay.prescription.drugs if drug]
-                )
-                if prescription_details:
+                prescription_details = [f"- {drug['name']} : {drug['dosage']}" for drug in stay.prescription.drugs if drug]
+                
+                if len(prescription_details):
                     info_list.append(prescription_details)
+            
 
-        pages: list[list[Stay | Prescription | Opinion]] = []
-
-        for info in info_list:
-            if not pages or len(pages[-1]) == 4:
-                pages.append([info])
-            else:
-                pages[-1].append(info)
-
-        if not pages:
+        if not info_list:
             CTkLabel(
                 self,
                 text="Liste est vide",
@@ -139,7 +141,7 @@ class Section(CTkFrame):
             ).place(relx=0.5, y=80, anchor=CENTER)
             return
 
-        for card_text in pages[self.current_page_index]:
+        for index, card_texts in enumerate(info_list):
             card = CTkFrame(
                 self.main_frame,
                 corner_radius=3,
@@ -149,61 +151,14 @@ class Section(CTkFrame):
                 border_color=Colors.SILVER,
                 border_width=1.1,
             )
-            card_label = CTkLabel(
-                card,
-                font=font_title(12),
-                fg_color=Colors.WHITE,
-                text_color=Colors.SECONDARY,
-                text=card_text,
-            )
+            card.pack(fill="x", pady=6)
 
-            card.pack(pady=6)
-            card_label.place(x=10, y=4)
-
-        pages_number = len(pages) - 1
-        button_fg_color = (
-            Colors.SILVER if self.current_page_index == pages_number else Colors.PRIMARY
-        )
-        button_hover_color = (
-            Colors.PRIMARY_HOVER
-            if self.current_page_index < pages_number
-            else Colors.SILVER
-        )
-
-        self.next_page_button = CTkButton(
-            self,
-            text=">",
-            font=font_title(22),
-            height=30,
-            width=30,
-            fg_color=button_fg_color,
-            corner_radius=2,
-            hover_color=button_hover_color,
-            command=lambda: self.update(
-                +1 if self.current_page_index < pages_number else 0
-            ),
-        )
-        self.next_page_button.place(x=200, y=450)
-        self.next_page_button.lift(self.main_frame)
-
-        self.previous_page_button = CTkButton(
-            self,
-            text="<",
-            font=font_title(22),
-            height=30,
-            width=30,
-            fg_color=Colors.PRIMARY if self.current_page_index else Colors.SILVER,
-            corner_radius=2,
-            hover_color=(
-                Colors.PRIMARY_HOVER if self.current_page_index else Colors.SILVER
-            ),
-            command=lambda: self.update(-1 if self.current_page_index else 0),
-        )
-        self.previous_page_button.place(x=20, y=450)
-        self.next_page_button.place(x=200, y=450)
-        self.next_page_button.lift(self.main_frame)
-
-    def update(self, num):
-        if num:
-            self.current_page_index += num
-            self.load()
+            for i, card_text in enumerate(card_texts):
+                card_label = CTkLabel(
+                    card,
+                    font=font_title(12),
+                    fg_color=Colors.WHITE,
+                    text_color=Colors.SECONDARY,
+                    text=card_text,
+                )
+                card_label.pack(pady=2)
