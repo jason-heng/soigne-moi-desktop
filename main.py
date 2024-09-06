@@ -2,6 +2,7 @@ from pages.login import LoginPage
 from pages.home import HomePage
 from utils.objects import Secretary
 from utils.ui import Colors, center
+from config import session_json_path
 
 import customtkinter as ctk
 from customtkinter import CTk
@@ -17,7 +18,7 @@ class App(CTk):
         center(1120, 620, self)
 
         try:
-            with open("session.json", "r") as f:
+            with open(session_json_path, "r") as f:
                 config = json.load(f)
                 if config and config["token"]:
                     token: str = config["token"]

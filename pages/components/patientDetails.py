@@ -2,6 +2,7 @@ from utils.ui import Colors, font_title, clear, place_page_top
 from utils.getters import get_patient
 from utils.objects import Patient, Prescription, Opinion, Stay
 from pages import login
+from config import session_json_path
 
 import json
 from customtkinter import *
@@ -28,11 +29,11 @@ class PatientDetails(CTkFrame):
     def view(self):
 
         place_page_top(
-            title=f"Informations de {self.patient.first_name} {self.patient.last_name}", 
-            page_content=self.page_content, 
+            title=f"Informations de {self.patient.first_name} {self.patient.last_name}",
+            page_content=self.page_content,
             disconnect=self.disconnect,
             handle_place_homepage=self.home_page.handle_place_homepage,
-            place_home_button=True
+            place_home_button=True,
         )
 
         stays_history = Section(
@@ -45,13 +46,11 @@ class PatientDetails(CTkFrame):
         opinions.place(x=250, y=0, relheight=1, relwidth=0.29)
         prescriptions.place(x=501, y=0, relheight=1, relwidth=0.29)
 
-
     def disconnect(self):
-        with open("session.json", "w") as session:
+        with open(session_json_path, "w") as session:
             json.dump({}, session)
 
         login.LoginPage(self.window)
-
 
 
 class Section(CTkFrame):
@@ -84,11 +83,11 @@ class Section(CTkFrame):
         title.grid(row=0, column=0, pady=10)
 
         self.main_frame = CTkScrollableFrame(
-            self, 
-            width=220, 
-            fg_color=Colors.WHITE, 
+            self,
+            width=220,
+            fg_color=Colors.WHITE,
             height=420,
-            )
+        )
         self.main_frame.grid(row=1, column=0, padx=6)
 
         self.next_page_button = CTkButton(
@@ -112,25 +111,30 @@ class Section(CTkFrame):
         if self.title == "Historique des séjours":
             info_list = [
                 (
-                    f"Début: {stay.start}", 
-                    f"fin: {stay.end}", 
-                    f"Motif: {stay.reason}", 
-                    f"Docteur: Dr.{stay.doctor.last_name}"
+                    f"Début: {stay.start}",
+                    f"fin: {stay.end}",
+                    f"Motif: {stay.reason}",
+                    f"Docteur: Dr.{stay.doctor.last_name}",
                 )
                 for stay in patient.stays
             ]
 
         elif self.title == "Avis des médecins":
-            info_list = [(opinion.title, opinion.description) for opinion in patient.opinions]
+            info_list = [
+                (opinion.title, opinion.description) for opinion in patient.opinions
+            ]
 
         elif self.title == "Préscriptions":
             info_list = []
             for stay in patient.stays:
-                prescription_details = [f"- {drug['name']} : {drug['dosage']}" for drug in stay.prescription.drugs if drug]
-                
+                prescription_details = [
+                    f"- {drug['name']} : {drug['dosage']}"
+                    for drug in stay.prescription.drugs
+                    if drug
+                ]
+
                 if len(prescription_details):
                     info_list.append(prescription_details)
-            
 
         if not info_list:
             CTkLabel(
