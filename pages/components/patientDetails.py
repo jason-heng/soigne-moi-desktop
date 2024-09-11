@@ -1,8 +1,9 @@
-from utils.ui import Colors, font_title, clear, place_page_top
+from utils.ui import Colors, font_title, clear, place_page_top, font_text
 from utils.getters import get_patient
 from utils.objects import Patient, Prescription, Opinion, Stay
 from pages import login
 from config import session_json_path
+from utils.textHandling import get_formated_text
 
 import json
 from customtkinter import *
@@ -160,9 +161,9 @@ class Section(CTkFrame):
             for i, card_text in enumerate(card_texts):
                 card_label = CTkLabel(
                     card,
-                    font=font_title(12),
+                    font=font_text(11) if self.title=="Avis des médecins" and i==1 else font_title(12),
                     fg_color=Colors.WHITE,
-                    text_color=Colors.SECONDARY,
-                    text=card_text,
+                    text_color=Colors.SECONDARY_LIGHT if self.title=="Avis des médecins" and i==1 else Colors.SECONDARY,
+                    text=get_formated_text(card_text, 30),
                 )
                 card_label.pack(pady=2)

@@ -9,6 +9,7 @@ from utils.ui import (
     place_loading_frame,
 )
 from utils.getters import *
+from utils.textHandling import get_formated_text
 from pages.components.patientDetails import PatientDetails
 
 
@@ -167,16 +168,11 @@ class PatientSection(CTkFrame):
                 ),
             )
 
-            motif = [chara for chara in f"""Motif: "{stay.reason}" """]
-            if len(motif) > 35:
-                motif = motif[:32]
-                motif.append("...")
-
             card_reason = CTkLabel(
                 patient_card,
                 font=font_text(12),
                 text_color=Colors.SECONDARY_LIGHT,
-                text="".join(motif),
+                text=get_formated_text(f"""Motif: "{stay.reason}" """, 30),
             )
             patient_card.pack(pady=6)
             card_title.place(x=10, y=6)
